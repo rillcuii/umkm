@@ -1,149 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    
-    <title>Document</title>
+    <title>Halaman Registrasi Pemilik UMKM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <form action="{{ route('umkm.register.submit') }}" method="POST">
-        @csrf
-        <!-- Data Pemilik UMKM -->
-        <input type="text" name="email" placeholder="Email" required>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" required>
-        <input type="text" name="nomer_handphone" placeholder="Nomor Handphone" required>
-        <input type="text" name="alamat_pemilik" placeholder="Alamat Pemilik" required>
-        <input type="text" name="kode_pos" placeholder="Kode Pos" required>
-        <input type="text" name="usia" placeholder="Usia" required>
+<body class="bg-white min-h-screen flex items-center justify-center px-4">
+    <!-- Kontainer Utama -->
+    <div class="max-w-3xl w-full mx-auto">
+        <form method="POST" action="{{ route('register.pelanggan.submit') }}"
+            class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            @csrf
 
-        <!-- Jenis Kelamin -->
-        <select name="jenis_kelamin" required>
-            <option value="laki-laki">Laki-laki</option>
-            <option value="perempuan">Perempuan</option>
-        </select>
+            <div class="md:col-span-2 flex justify-center mb-3">
+                <img src="{{ asset('img/logo-umkm.png') }}" alt="Logo UMKM" class="h-12 md:h-16">
+            </div>
 
-        <!-- Provinsi -->
-        <select name="provinsi" id="provinsi" required>
-            <option value="plih provinsi">plih provinsi...</option>
-            @foreach ($provinces as $provinsi)
-                <option value={{ $provinsi->id }}>
-                    {{ $provinsi->name }}
-                </option>
-            @endforeach
-        </select>
+            <h1 class="md:col-span-2 text-center text-gray-700 font-bold mb-3 text-lg">Daftar Pemilik UMKM</h1>
 
-        <!-- Kabupaten/Kota -->
-        <select name="kabupaten_kota" id="kabupaten_kota" required>
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" name="email" placeholder="email@example.com" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        </select>
+            <!-- Username -->
+            <div>
+                <label for="username" class="block text-xs font-bold text-gray-700 mb-1">Username</label>
+                <input type="text" id="username" name="username" placeholder="Username" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        <!-- Kecamatan -->
-        <select name="kecamatan" id="kecamatan" required>
-            
-        </select>
+            <!-- Nama Lengkap -->
+            <div>
+                <label for="nama_lengkap" class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap</label>
+                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        <!-- Kelurahan -->
-        <select name="kelurahan" id="desa" required>
+            <!-- Nama UMKM -->
+            <div>
+                <label for="nama_umkm" class="block text-xs font-bold text-gray-700 mb-1">Nama UMKM</label>
+                <input type="text" id="nama_umkm" name="nama_umkm" placeholder="Nama UMKM" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        </select>
+            <!-- Nomor Handphone -->
+            <div>
+                <label for="nomer_handphone" class="block text-xs font-bold text-gray-700 mb-1">Nomor Handphone</label>
+                <input type="tel" id="nomer_handphone" name="nomer_handphone" placeholder="Nomor Handphone" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        <!-- Status Kepemilikan -->
-        <select name="status_kepemilikan" required>
-            <option value="individu">Individu</option>
-            <option value="kelompok">Kelompok</option>
-            <option value="lainnya">Lainnya</option>
-        </select>
+            <!-- Alamat Pemilik -->
+            <div>
+                <label for="alamat_pemilik" class="block text-xs font-bold text-gray-700 mb-1">Alamat Pemilik</label>
+                <textarea id="alamat_pemilik" name="alamat_pemilik" rows="2" placeholder="Alamat Lengkap" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></textarea>
+            </div>
 
-        <!-- Pilih Produk (opsional) -->
-        <select name="id_produk">
-            <option value="">Pilih Produk (Opsional)</option>
-            @foreach ($produk as $prod)
-                <option value="{{ $prod->id_produk }}">{{ $prod->nama_produk }}</option>
-            @endforeach
-        </select>
+            <!-- Kode Pos -->
+            <div>
+                <label for="kode_pos" class="block text-xs font-bold text-gray-700 mb-1">Kode Pos</label>
+                <input type="text" id="kode_pos" name="kode_pos" placeholder="Kode Pos" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        <!-- Password -->
-        <input type="password" name="password" placeholder="Password" required>
+            <!-- Usia -->
+            <div>
+                <label for="usia" class="block text-xs font-bold text-gray-700 mb-1">Usia</label>
+                <input type="number" id="usia" name="usia" placeholder="Usia" min="18" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-        <button type="submit">Daftar</button>
-    </form>
+            <!-- Jenis Kelamin -->
+            <div>
+                <label for="jenis_kelamin" class="block text-xs font-bold text-gray-700 mb-1">Jenis Kelamin</label>
+                <select id="jenis_kelamin" name="jenis_kelamin" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+                    <option value="laki-laki">Laki-laki</option>
+                    <option value="perempuan">Perempuan</option>
+                </select>
+            </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Provinsi -->
+            <div>
+                <label for="provinsi" class="block text-xs font-bold text-gray-700 mb-1">Provinsi</label>
+                <select id="provinsi" name="provinsi" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+                    <option value="">Pilih Provinsi...</option>
+                    @foreach ($provinces as $provinsi)
+                        <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-    <script>
-        $(document).ready(function() {
-            // Set CSRF token for AJAX requests
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            <!-- Kabupaten/Kota -->
+            <div>
+                <label for="kabupaten_kota" class="block text-xs font-bold text-gray-700 mb-1">Kabupaten/Kota</label>
+                <select id="kabupaten_kota" name="kabupaten_kota" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></select>
+            </div>
 
-            $('#provinsi').on('change', function() {
-                let id_provinsi = $(this).val();
+            <!-- Kecamatan -->
+            <div>
+                <label for="kecamatan" class="block text-xs font-bold text-gray-700 mb-1">Kecamatan</label>
+                <select id="kecamatan" name="kecamatan" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></select>
+            </div>
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('getkabupaten') }}", 
-                    data: {
-                        id_provinsi: id_provinsi
-                    },
-                    cache: false,
+            <!-- Kelurahan -->
+            <div>
+                <label for="kelurahan" class="block text-xs font-bold text-gray-700 mb-1">Kelurahan</label>
+                <select id="kelurahan" name="kelurahan" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></select>
+            </div>
 
-                    success: function(msg) {
-                        $('#kabupaten_kota').html(msg); 
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-            $('#kabupaten_kota').on('change', function() {
-                let id_kabupaten = $(this).val();
+            <!-- Status Kepemilikan -->
+            <div>
+                <label for="status_kepemilikan" class="block text-xs font-bold text-gray-700 mb-1">Status
+                    Kepemilikan</label>
+                <select id="status_kepemilikan" name="status_kepemilikan" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+                    <option value="individu">Individu</option>
+                    <option value="kelompok">Kelompok</option>
+                    <option value="lainnya">Lainnya</option>
+                </select>
+            </div>
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('getkecamatan') }}", 
-                    data: {
-                        id_kabupaten: id_kabupaten
-                    },
-                    cache: false,
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
 
-                    success: function(msg) {
-                        $('#kecamatan').html(msg); 
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-            $('#kecamatan').on('change', function() {
-                let id_kecamatan = $(this).val();
+            <!-- Teks dan Tombol -->
+            <p class="md:col-span-2 text-center text-xs text-gray-500 mb-3">
+                Sudah Punya Akun?
+                <a href="{{ route('login') }}" class="text-purple-500 hover:underline">Masuk</a>
+            </p>
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('getdesa') }}", 
-                    data: {
-                        id_kecamatan: id_kecamatan
-                    },
-                    cache: false,
-
-                    success: function(msg) {
-                        $('#desa').html(msg); 
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                    }
-                });
-            });
-        });
-    </script>
+            <div class="md:col-span-2">
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg font-bold hover:from-pink-500 hover:to-purple-500 transition-all duration-200 text-sm">
+                    Daftar Pemilik UMKM
+                </button>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

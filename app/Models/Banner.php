@@ -16,7 +16,5 @@ class Banner extends Model
         'link',
         'status',
     ];
-    public $timestamps = false;
-    public $incrementing = false;
-    
+    public $timestamps = false;    
 }

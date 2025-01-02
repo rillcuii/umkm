@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\DataUmkmController;
 use App\Http\Controllers\PemilikUmkmController;
 use App\Http\Controllers\UserController;
+use App\Models\Banner;
 use App\Models\PemilikUmkm;
 use Illuminate\Support\Facades\Route;
 
@@ -24,9 +28,22 @@ Route::post('/getdesa', [PemilikUmkmController::class, 'getdesa'])->name('getdes
 
 
 // Route untuk admin
-Route::middleware(['auth', 'role:admin'])->get('/admin', function () {
-    return view('dashboard.admin.dashboard');
-})->name('admin.dashboard');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminDashboardController::class, 'chart'])->name('admin.dashboard');
+
+    //banner
+    Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.index.banner');
+    Route::get('/admin/tambah_banner', [BannerController::class, 'create'])->name('admin.tambah.banner');
+    Route::post('/admin/banner/simpan', [BannerController::class ,'store'])->name('admin.simpan.banner');
+    Route::delete('admin/delete/{id_banner}', [BannerController::class, 'destroy'])->name('admin.banner.delete');
+
+
+    //data umkm
+    Route::get('/admin/data_umkm', [DataUmkmController::class, 'index'])->name('admin.index.umkm');
+    Route::get('/admin/data_umkm/detail/{id_umkm}', [DataUmkmController::class, 'detail'])->name('admin.detail.umkm');
+    Route::delete('admin/delete/{id_umkm}', [DataUmkmController::class, 'delete'])->name('umkm.delete');
+});
+
 
 // Route untuk pemilik UMKM
 Route::middleware(['auth:umkm'])->get('/umkm', function () {

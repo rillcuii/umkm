@@ -10,6 +10,11 @@ class PemilikUmkm extends Model implements AuthenticatableContract
 {
     use Authenticatable;
 
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_umkm', 'id_umkm');
+    }
+
     protected $table = 'pemilik_umkm';
     protected $primaryKey = 'id_umkm'; 
     protected $fillable = [
@@ -17,6 +22,7 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     'email',
     'username',
     'nama_lengkap',
+    'nama_umkm',
     'jenis_kelamin',
     'usia',
     'status_kepemilikan',
@@ -28,9 +34,9 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     'kecamatan',
     'kelurahan',
     'kode_pos',
+    'status',
     'password',
     ];
-
     public $timestamps = false;
 }
 

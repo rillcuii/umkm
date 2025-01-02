@@ -14,7 +14,7 @@ class BannerController extends Controller
     {
         $banner = Banner::get();
 
-        return view('banner.data_banner', compact('banner'));
+        return view('dashboard.admin.banner.index_banner', compact('banner'));
     }
 
     /**
@@ -22,7 +22,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.admin.banner.tambah_banner');
     }
 
     /**
@@ -30,7 +30,12 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Banner::create([
+            'nama_banner' => $request->nama_banner,
+            'link' => $request->link,
+            'status' => 'off',
+        ]);
+        return redirect()->route('admin.index.banner');
     }
 
     /**
@@ -60,8 +65,12 @@ class BannerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Banner $banner)
+    public function destroy(Banner $id_banner)
     {
-        //
+        // Menghapus banner berdasarkan instance yang diterima
+        $id_banner->delete();
+
+        // Redirect setelah penghapusan dengan pesan sukses
+        return redirect()->route('admin.index.banner')->with('success', 'Banner berhasil dihapus.');
     }
 }

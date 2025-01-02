@@ -78,10 +78,11 @@ class PemilikUmkmController extends Controller
             'email' => 'required|email',
             'username' => 'required|string|max:10',
             'nama_lengkap' => 'required|string|max:25',
+            'nama_umkm' => 'required|string|max:25',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'usia' => 'required|integer',
             'status_kepemilikan' => 'required|in:individu,kelompok,lainnya',
-            'id_produk' => 'nullable',
+            // 'id_produk' => 'nullable',
             'nomer_handphone' => 'required',
             'alamat_pemilik' => 'required',
             'provinsi' => 'required',
@@ -89,12 +90,17 @@ class PemilikUmkmController extends Controller
             'kecamatan' => 'required',
             'kelurahan' => 'required',
             'kode_pos' => 'required|integer',
+            // 'status' => 'nullable',
             'password' => 'required|string|min:8',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
 
         $validated['id_produk'] = $validated['id_produk'] ?? null;
+
+        $validated['status'] = $validated['status'] ?? 'on';
+
+        // dd($validated);
 
         PemilikUmkm::create($validated);
 
