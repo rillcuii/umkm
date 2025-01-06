@@ -7,13 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Halaman Registrasi Pemilik UMKM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
 </head>
 
 <body class="bg-white min-h-screen flex items-center justify-center px-4">
     <!-- Kontainer Utama -->
     <div class="max-w-3xl w-full mx-auto">
-        <form method="POST" action="{{ route('register.pelanggan.submit') }}"
-            class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <form action="{{ route('umkm.register.submit') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-3">
             @csrf
 
             <div class="md:col-span-2 flex justify-center mb-3">
@@ -50,10 +51,24 @@
                     class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
             </div>
 
+            <!-- Foto Profil -->
+            <div>
+                <label for="foto_profil" class="block text-xs font-bold text-gray-700 mb-1">Foto Profil</label>
+                <input type="file" id="foto_profil" accept=".png, .jpg, .jpeg" name="foto_profil" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
+
+            <!-- Foto UMKM -->
+            <div>
+                <label for="foto_umkm" class="block text-xs font-bold text-gray-700 mb-1">Foto UMKM</label>
+                <input type="file" id="foto_umkm" accept=".png, .jpg, .jpeg" name="foto_umkm" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
+
             <!-- Nomor Handphone -->
             <div>
                 <label for="nomer_handphone" class="block text-xs font-bold text-gray-700 mb-1">Nomor Handphone</label>
-                <input type="tel" id="nomer_handphone" name="nomer_handphone" placeholder="Nomor Handphone" required
+                <input type="number" id="nomer_handphone" name="nomer_handphone" placeholder="Nomor Handphone" required
                     class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
             </div>
 
@@ -116,8 +131,8 @@
 
             <!-- Kelurahan -->
             <div>
-                <label for="kelurahan" class="block text-xs font-bold text-gray-700 mb-1">Kelurahan</label>
-                <select id="kelurahan" name="kelurahan" required
+                <label for="kelurahan" class="block text-xs font-bold text-gray-700 mb-1">Kelurahan/Desa</label>
+                <select id="desa" name="kelurahan" required
                     class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></select>
             </div>
 
@@ -154,6 +169,77 @@
             </div>
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Set CSRF token for AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#provinsi').on('change', function() {
+                let id_provinsi = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('getkabupaten') }}",
+                    data: {
+                        id_provinsi: id_provinsi
+                    },
+                    cache: false,
+
+                    success: function(msg) {
+                        $('#kabupaten_kota').html(msg);
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            });
+            $('#kabupaten_kota').on('change', function() {
+                let id_kabupaten = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('getkecamatan') }}",
+                    data: {
+                        id_kabupaten: id_kabupaten
+                    },
+                    cache: false,
+
+                    success: function(msg) {
+                        $('#kecamatan').html(msg);
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            });
+            $('#kecamatan').on('change', function() {
+                let id_kecamatan = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('getdesa') }}",
+                    data: {
+                        id_kecamatan: id_kecamatan
+                    },
+                    cache: false,
+
+                    success: function(msg) {
+                        $('#desa').html(msg);
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

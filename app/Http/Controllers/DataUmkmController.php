@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Province;
 use App\Models\Transaksi;
 use App\Models\PemilikUmkm;
 use Illuminate\Http\Request;
@@ -19,7 +20,28 @@ class DataUmkmController extends Controller
 
     public function detail(string $id_umkm)
     {
-        $umkm = PemilikUmkm::findOrFail($id_umkm);
+        $umkm = DB::table('pemilik_umkm')
+            ->join('provinces', function ($join) {
+                $join->on(DB::raw('pemilik_umkm.provinsi COLLATE utf8mb4_unicode_ci'), '=', DB::raw('provinces.id COLLATE utf8mb4_unicode_ci'));
+            })
+            ->join('regencies', function ($join) {
+                $join->on(DB::raw('pemilik_umkm.kabupaten_kota COLLATE utf8mb4_unicode_ci'), '=', DB::raw('regencies.id COLLATE utf8mb4_unicode_ci'));
+            })
+            ->join('districts', function ($join) {
+                $join->on(DB::raw('pemilik_umkm.kecamatan COLLATE utf8mb4_unicode_ci'), '=', DB::raw('districts.id COLLATE utf8mb4_unicode_ci'));
+            })
+            ->join('villages', function ($join) {
+                $join->on(DB::raw('pemilik_umkm.kelurahan COLLATE utf8mb4_unicode_ci'), '=', DB::raw('villages.id COLLATE utf8mb4_unicode_ci'));
+            })
+            ->select(
+                'pemilik_umkm.*',
+                'provinces.name as provinsi_name',
+                'regencies.name as kabupaten_kota_name',
+                'districts.name as kecamatan_name',
+                'villages.name as kelurahan_name'
+            )
+            ->where('pemilik_umkm.id_umkm', $id_umkm)
+            ->first();
 
         return view('dashboard.admin.data_umkm.detail_umkm', compact('umkm'));
     }

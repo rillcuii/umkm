@@ -10,6 +10,7 @@ use App\Models\Province;
 use App\Models\PemilikUmkm;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class PemilikUmkmController extends Controller
 {
@@ -25,7 +26,7 @@ class PemilikUmkmController extends Controller
         return view('register_umkm', compact('produk', 'provinces'));
     }
 
-    public function getkabupaten(request $request) 
+    public function getkabupaten(request $request)
     {
         $id_provinsi = $request->id_provinsi;
 
@@ -33,14 +34,14 @@ class PemilikUmkmController extends Controller
 
         $option = "<option>Pilih Kabupaten...</option>";
 
-        foreach($kabupatens as $kabupaten){
+        foreach ($kabupatens as $kabupaten) {
             $option .= "<option value= '$kabupaten->id'>$kabupaten->name</option>";
         }
 
         echo $option;
     }
 
-    public function getkecamatan(request $request) 
+    public function getkecamatan(request $request)
     {
         $id_kabupaten = $request->id_kabupaten;
 
@@ -48,14 +49,13 @@ class PemilikUmkmController extends Controller
 
         $option = "<option>Pilih Kecamatan...</option>";
 
-        foreach($kecamatans as $kecamatan){
+        foreach ($kecamatans as $kecamatan) {
             $option .= "<option value= '$kecamatan->id'>$kecamatan->name</option>";
-
         }
         echo $option;
     }
 
-    public function getdesa(request $request) 
+    public function getdesa(request $request)
     {
         $id_kecamatan = $request->id_kecamatan;
 
@@ -63,9 +63,8 @@ class PemilikUmkmController extends Controller
 
         $option = "<option>Pilih Desa...</option>";
 
-        foreach($desas as $desa){
+        foreach ($desas as $desa) {
             $option .= "<option value= '$desa->id'>$desa->name</option>";
-
         }
         echo $option;
     }
@@ -79,6 +78,8 @@ class PemilikUmkmController extends Controller
             'username' => 'required|string|max:10',
             'nama_lengkap' => 'required|string|max:25',
             'nama_umkm' => 'required|string|max:25',
+            'foto_profil' => 'required|string',
+            'foto_umkm' => 'required|string',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'usia' => 'required|integer',
             'status_kepemilikan' => 'required|in:individu,kelompok,lainnya',
@@ -93,6 +94,31 @@ class PemilikUmkmController extends Controller
             // 'status' => 'nullable',
             'password' => 'required|string|min:8',
         ]);
+
+        if (!Storage::exists('public/foto_profil')) {
+            Storage::makeDirectory('public/foto_profil');
+        }
+
+        // Proses upload foto_profil jika ada
+        if ($request->hasFile('foto_profil')) {
+            $foto = $request->file('foto_profil');
+            $filename = date('YmdHis') . '.' . $foto->getClientOriginalExtension();
+            $foto->storeAs('public/foto_profil', $filename);
+            $validated['foto_profil'] = $filename;
+        }
+
+        // Cek dan buat folder untuk foto_umkm jika belum ada
+        if (!Storage::exists('public/foto_umkm')) {
+            Storage::makeDirectory('public/foto_umkm');
+        }
+
+        // Proses upload foto_umkm jika ada
+        if ($request->hasFile('foto_umkm')) {
+            $fotoUmkm = $request->file('foto_umkm');
+            $filenameUmkm = date('YmdHis') . '.' . $fotoUmkm->getClientOriginalExtension();
+            $fotoUmkm->storeAs('public/foto_umkm', $filenameUmkm);
+            $validated['foto_umkm'] = $filenameUmkm;
+        }
 
         $validated['password'] = bcrypt($validated['password']);
 

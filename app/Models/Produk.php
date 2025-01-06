@@ -13,7 +13,10 @@ class Produk extends Model
     protected $fillable = [
         'id_produk',
         'nama_produk',
-        'harga'
+        'stok',
+        'foto_produk',
+        'harga',
+        'status',
     ];
     public $timestamps = false;
 }

@@ -74,5 +74,13 @@
 
     @yield('sidebar_admin')
 </body>
+<style>
+    #default-sidebar a {
+        color: white !important;
+    }
+    #default-sidebar  a:hover svg {
+        color: white; /* Mengatur warna ikon menjadi putih saat di-hover */
+    }
+</style>
 
 </html>

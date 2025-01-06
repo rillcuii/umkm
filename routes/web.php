@@ -35,6 +35,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.index.banner');
     Route::get('/admin/tambah_banner', [BannerController::class, 'create'])->name('admin.tambah.banner');
     Route::post('/admin/banner/simpan', [BannerController::class ,'store'])->name('admin.simpan.banner');
+    Route::post('/admin/update-status', [BannerController::class, 'updateStatus'])->name('admin.update.status');
     Route::delete('admin/delete/{id_banner}', [BannerController::class, 'destroy'])->name('admin.banner.delete');
 
 

@@ -14,6 +14,7 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     {
         return $this->hasMany(Transaksi::class, 'id_umkm', 'id_umkm');
     }
+    
 
     protected $table = 'pemilik_umkm';
     protected $primaryKey = 'id_umkm'; 
@@ -23,6 +24,8 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     'username',
     'nama_lengkap',
     'nama_umkm',
+    'foto_profil',
+    'foto_umkm',
     'jenis_kelamin',
     'usia',
     'status_kepemilikan',
