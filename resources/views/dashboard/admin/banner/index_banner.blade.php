@@ -65,7 +65,6 @@
                                                     </div>
                                                 </label>
                                             </form>
-
                                         </td>
                                         <td class="px-6 py-4 text-center space-x-2">
                                             <form action="{{ route('admin.banner.delete', $banner->id_banner) }}"

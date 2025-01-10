@@ -9,8 +9,6 @@
 </head>
 
 <body class = "bg-gray-100">
-
-
     <aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
@@ -78,8 +76,10 @@
     #default-sidebar a {
         color: white !important;
     }
-    #default-sidebar  a:hover svg {
-        color: white; /* Mengatur warna ikon menjadi putih saat di-hover */
+
+    #default-sidebar a:hover svg {
+        color: white;
+        /* Mengatur warna ikon menjadi putih saat di-hover */
     }
 </style>
 

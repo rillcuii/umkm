@@ -4,9 +4,11 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DataUmkmController;
 use App\Http\Controllers\PemilikUmkmController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\UserController;
 use App\Models\Banner;
 use App\Models\PemilikUmkm;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,7 +36,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //banner
     Route::get('/admin/banner', [BannerController::class, 'index'])->name('admin.index.banner');
     Route::get('/admin/tambah_banner', [BannerController::class, 'create'])->name('admin.tambah.banner');
-    Route::post('/admin/banner/simpan', [BannerController::class ,'store'])->name('admin.simpan.banner');
+    Route::post('/admin/banner/simpan', [BannerController::class, 'store'])->name('admin.simpan.banner');
     Route::post('/admin/update-status', [BannerController::class, 'updateStatus'])->name('admin.update.status');
     Route::delete('admin/delete/{id_banner}', [BannerController::class, 'destroy'])->name('admin.banner.delete');
 
@@ -47,6 +49,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 // Route untuk pemilik UMKM
-Route::middleware(['auth:umkm'])->get('/umkm', function () {
-    return view('dashboard.umkm.dashboard');
-})->name('umkm.dashboard');
+Route::middleware(['auth:umkm'])->group(function () {
+    Route::get('/umkm', function () {
+        $id_umkm = auth()->user()->id_umkm;
+
+        $produk = Produk::where('id_umkm', $id_umkm)->get();
+
+        return view('dashboard.umkm.dashboard', compact('produk', 'id_umkm'));
+    })->name('umkm.dashboard');
+
+    //produk
+    Route::get('/umkm/{id_umkm}/produk', [ProdukController::class, 'index'])->name('umkm.index.produk');
+    Route::get('/umkm/{id_umkm}/tambah_produk', [ProdukController::class, 'create'])->name('umkm.tambah.produk');
+    Route::post('/umkm/{id_umkm}/store', [ProdukController::class, 'store'])->name('umkm.simpan.produk');
+    Route::post('/umkm/update-status', [ProdukController::class, 'updateStatus'])->name('umkm.update.status');
+    Route::get('/umkm/{id_produk}/produk/{id_umkm}/edit', [ProdukController::class, 'edit'])->name('umkm.edit.produk');
+    Route::put('/umkm/{id_produk}/produk/{id_umkm}/update', [ProdukController::class, 'update'])->name('umkm.update.produk');
+});

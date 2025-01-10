@@ -14,6 +14,10 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     {
         return $this->hasMany(Transaksi::class, 'id_umkm', 'id_umkm');
     }
+    public function produk()
+    {
+        return $this->hasMany(Produk::class, 'id_umkm', 'id_umkm');
+    }
     
 
     protected $table = 'pemilik_umkm';
