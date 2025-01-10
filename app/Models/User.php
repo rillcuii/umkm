@@ -21,4 +21,9 @@ class User extends Model implements AuthenticatableContract
     ];
     public $timestamps = false;
     public $incrementing = false;
+
+    public function pemilikUmkm()
+    {
+        return $this->hasOne(PemilikUmkm::class, 'user_id', 'id');  // Relasi dengan pemilik UMKM
+    }
 }

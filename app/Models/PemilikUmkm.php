@@ -18,32 +18,36 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     {
         return $this->hasMany(Produk::class, 'id_umkm', 'id_umkm');
     }
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 
     protected $table = 'pemilik_umkm';
-    protected $primaryKey = 'id_umkm'; 
+    protected $primaryKey = 'id_umkm';
+    protected $guarded = []; // Pastikan tidak ada pembatasan pada kolom lainnya
     protected $fillable = [
-    'id_umkm',
-    'email',
-    'username',
-    'nama_lengkap',
-    'nama_umkm',
-    'foto_profil',
-    'foto_umkm',
-    'jenis_kelamin',
-    'usia',
-    'status_kepemilikan',
-    'id_produk',
-    'nomer_handphone',
-    'alamat_pemilik',
-    'provinsi',
-    'kabupaten_kota',
-    'kecamatan',
-    'kelurahan',
-    'kode_pos',
-    'status',
-    'password',
+        'id_umkm',
+        'email',
+        'username',
+        'nama_lengkap',
+        'nama_umkm',
+        'foto_profil',
+        'foto_umkm',
+        'jenis_kelamin',
+        'usia',
+        'status_kepemilikan',
+        'id_produk',
+        'nomer_handphone',
+        'alamat_pemilik',
+        'provinsi',
+        'kabupaten_kota',
+        'kecamatan',
+        'kelurahan',
+        'kode_pos',
+        'status',
+        'password',
     ];
     public $timestamps = false;
 }
-
