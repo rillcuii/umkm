@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Messages extends Model
 {
-    protected $table = 'messages';  // Tabel yang digunakan oleh model
-
+    protected $table = 'messages';  
     protected $fillable = [
         'from_user_id',
         'to_user_id',
@@ -20,7 +19,6 @@ class Messages extends Model
     public $timestamps = true;    
 
 
-    // Relasi dengan tabel users
     public function fromUser()
     {
         return $this->belongsTo(User::class, 'from_user_id');
@@ -31,7 +29,6 @@ class Messages extends Model
         return $this->belongsTo(User::class, 'to_user_id');
     }
 
-    // Relasi dengan tabel pemilik_umkm
     public function fromUmkm()
     {
         return $this->belongsTo(PemilikUmkm::class, 'from_umkm_id');

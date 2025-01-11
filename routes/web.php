@@ -5,18 +5,21 @@ use App\Models\Produk;
 use App\Models\PemilikUmkm;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\DataUmkmController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PemilikUmkmController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Models\Transaksi;
 
 // Route untuk halaman utama
-Route::get('/', function () {
-    return view('index');
-})->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/umkm/{id_umkm}', [IndexController::class, 'show'])->name('umkm.show');
+
 
 // AUTH
 Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
@@ -75,7 +78,18 @@ Route::middleware(['auth:umkm'])->group(function () {
     Route::get('/umkm/{id_umkm}/messages/', [MessageController::class, 'index'])->name('umkm.messages.index');
     Route::get('umkm/{id_umkm}/messages/{id_user}', [MessageController::class, 'show'])->name('umkm.messages.show');
     Route::post('/umkm/{id_umkm}/messages/{id_user}', [MessageController::class, 'send'])->name('umkm.messages.send');
+
+    //transaksi
+    Route::get('/umkm/{id_umkm}/transaksi', [TransaksiController::class, 'index'])->name('umkm.index.transaksi');
+    Route::get('/umkm/{id_umkm}/detail/transaksi/{id_transaksi}', [TransaksiController::class, 'detail'])->name('admin.detail.transaksi');
 });
 
-// Route untuk pelanggan (dengan middleware untuk pelanggan)
-Route::middleware(['auth'])->group(function () {});
+Route::middleware(['auth', 'role:pelanggan'])->group(function () {
+    //transaksi
+    Route::get('/transaksi/{id_umkm}/{id_produk}', [TransaksiController::class, 'create'])->name('transaksi.create');
+    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+    Route::get('/history-transaksi', [TransaksiController::class, 'history'])->name('history.transaksi')->middleware('auth');
+    Route::post('/getkabupaten', [TransaksiController::class, 'getkabupaten'])->name('getkabupaten');
+    Route::post('/getkecamatan', [TransaksiController::class, 'getkecamatan'])->name('getkecamatan');
+    Route::post('/getdesa', [TransaksiController::class, 'getdesa'])->name('getdesa');
+});

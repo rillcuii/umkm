@@ -13,34 +13,27 @@ class MessageController extends Controller
     // Menampilkan daftar percakapan untuk UMKM
     public function index()
     {
-        // Mendapatkan pengguna UMKM yang sedang login
         $user = Auth::guard('umkm')->user();
 
-        // Mendapatkan id_umkm dari pengguna yang sedang login
         $id_umkm = $user->id_umkm;
 
-        // Mengambil semua pesan yang ditujukan ke UMKM yang sedang login
         $messages = Messages::where(function ($query) use ($user) {
-            $query->where('to_user_id', $user->id_umkm)  // Pesan dari user ke UMKM
-                ->orWhereNull('to_user_id') // Menangani pesan dengan to_user_id null
-                ->whereNull('from_umkm_id'); // Menangani pesan dengan from_umkm_id null
+            $query->where('to_user_id', $user->id_umkm)
+                ->orWhereNull('to_user_id')
+                ->whereNull('from_umkm_id');
         })
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Debugging: Pastikan pesan yang diterima
         // dd($messages);
 
-        // Mengambil ID dari semua pengguna yang terlibat dalam percakapan
         $userIds = $messages->pluck('from_user_id')->merge($messages->pluck('to_user_id'))->unique();
 
-        // Menyaring hanya user dengan id_user yang valid (tidak null)
         $userNames = User::whereIn('id_user', $userIds->filter(function ($id) {
-            return $id !== null;  // Hanya ambil ID yang tidak null
+            return $id !== null;  
         }))
             ->pluck('username', 'id_user');
 
-        // Menyediakan nilai default untuk user yang tidak ditemukan
         foreach ($messages as $message) {
             if (empty($userNames[$message->from_user_id])) {
                 $userNames[$message->from_user_id] = 'Unknown User';
@@ -55,9 +48,7 @@ class MessageController extends Controller
 
     public function show($id_umkm, $id_user)
     {
-        // Mengambil pesan antara UMKM dan user tertentu
         $messages = Messages::where(function ($query) use ($id_user, $id_umkm) {
-            // Menyaring pesan yang dikirim dari user ke UMKM dan sebaliknya
             $query->where(function ($subQuery) use ($id_user, $id_umkm) {
                 $subQuery->where('from_user_id', $id_user)
                     ->where('to_umkm_id', $id_umkm);
@@ -74,10 +65,9 @@ class MessageController extends Controller
                 'user.username as user_name',
                 'pemilik_umkm.nama_umkm as umkm_name'
             )
-            ->orderBy('messages.created_at', 'asc') // Urutkan berdasarkan waktu, dari yang lama ke yang baru
+            ->orderBy('messages.created_at', 'asc') 
             ->get();
 
-        // Mengisi nama default jika nama user atau UMKM kosong
         foreach ($messages as $message) {
             if (empty($message->user_name)) {
                 $message->user_name = 'Unknown User';
@@ -87,7 +77,6 @@ class MessageController extends Controller
             }
         }
 
-        // Mengembalikan view dengan data pesan
         return view('dashboard.umkm.messages.show', compact('messages', 'id_umkm', 'id_user'));
     }
 

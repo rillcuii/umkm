@@ -55,7 +55,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700 group">
+                        <a href="{{ route('umkm.index.transaksi', ['id_umkm' => $id_umkm]) }}"
+                            class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700 group">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">

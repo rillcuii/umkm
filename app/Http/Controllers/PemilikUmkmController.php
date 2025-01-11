@@ -20,11 +20,7 @@ class PemilikUmkmController extends Controller
         $produk = Produk::all();
         $provinces = Province::all();
         $kategori = Kategori::all();
-        // $regencies = Regency::all();
-        // $districts = District::all();
-        // $villages = Village::all();
-
-        // dd($produk, $provinces, $regencies, $districts, $villages);
+    
         return view('register_umkm', compact('produk', 'provinces', 'kategori'));
     }
 
@@ -80,8 +76,8 @@ class PemilikUmkmController extends Controller
             'username' => 'required|string|max:10',
             'nama_lengkap' => 'required|string|max:25',
             'nama_umkm' => 'required|string|max:25',
-            'foto_profil' => 'required|string',
-            'foto_umkm' => 'required|string',
+            'foto_profil' => 'required|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_umkm' => 'required|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'usia' => 'required|integer',
             'status_kepemilikan' => 'required|in:individu,kelompok,lainnya',
@@ -125,8 +121,6 @@ class PemilikUmkmController extends Controller
         $validated['id_produk'] = $validated['id_produk'] ?? null;
 
         $validated['status'] = $validated['status'] ?? 'on';
-
-        // dd($validated);
 
         PemilikUmkm::create($validated);
 

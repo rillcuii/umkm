@@ -14,7 +14,7 @@
 <body class="bg-white min-h-screen flex items-center justify-center px-4">
     <!-- Kontainer Utama -->
     <div class="max-w-3xl w-full mx-auto">
-        <form action="{{ route('umkm.register.submit') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <form action="{{ route('umkm.register.submit') }}" enctype="multipart/form-data" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-3">
             @csrf
 
             <div class="md:col-span-2 flex justify-center mb-3">

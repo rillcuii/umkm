@@ -34,14 +34,14 @@ class DataUmkmController extends Controller
             ->join('villages', function ($join) {
                 $join->on(DB::raw('pemilik_umkm.kelurahan COLLATE utf8mb4_unicode_ci'), '=', DB::raw('villages.id COLLATE utf8mb4_unicode_ci'));
             })
-            ->join('kategori', 'pemilik_umkm.id_kategori', '=', 'kategori.id_kategori') // Join ke tabel kategori
+            ->join('kategori', 'pemilik_umkm.id_kategori', '=', 'kategori.id_kategori')
             ->select(
                 'pemilik_umkm.*',
                 'provinces.name as provinsi_name',
                 'regencies.name as kabupaten_kota_name',
                 'districts.name as kecamatan_name',
                 'villages.name as kelurahan_name',
-                'kategori.nama_kategori' // Ambil nama_kategori dari tabel kategori
+                'kategori.nama_kategori'
             )
             ->where('pemilik_umkm.id_umkm', $id_umkm)
             ->first();
@@ -53,19 +53,14 @@ class DataUmkmController extends Controller
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // Cari UMKM berdasarkan id_umkm
         $umkm = PemilikUmkm::findOrFail($id_umkm);
 
-        // Hapus transaksi yang terkait dengan UMKM (jika ada)
-        $umkm->transaksi()->delete();  // Menggunakan relasi untuk menghapus transaksi
+        $umkm->transaksi()->delete();  
 
-        // Hapus UMKM itu sendiri
         $umkm->delete();
 
-        // Aktifkan kembali pengecekan foreign key
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // Kembali ke halaman index UMKM
         return redirect()->route('admin.index.umkm');
     }
 }

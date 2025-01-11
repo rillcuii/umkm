@@ -22,11 +22,15 @@ class PemilikUmkm extends Model implements AuthenticatableContract
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
 
 
     protected $table = 'pemilik_umkm';
     protected $primaryKey = 'id_umkm';
-    protected $guarded = []; // Pastikan tidak ada pembatasan pada kolom lainnya
+    protected $guarded = [];
     protected $fillable = [
         'id_umkm',
         'email',

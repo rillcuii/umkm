@@ -24,6 +24,6 @@ class User extends Model implements AuthenticatableContract
 
     public function pemilikUmkm()
     {
-        return $this->hasOne(PemilikUmkm::class, 'user_id', 'id');  // Relasi dengan pemilik UMKM
+        return $this->hasOne(PemilikUmkm::class, 'user_id', 'id'); 
     }
 }

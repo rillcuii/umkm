@@ -78,7 +78,6 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id_produk, $id_umkm)
     {
-        // Validasi data inputan
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
             'stok' => 'required|integer|min:0',
@@ -87,31 +86,25 @@ class ProdukController extends Controller
         ]);
 
 
-        // Cari produk berdasarkan ID UMKM dan ID Produk
         $produk = Produk::where('id_umkm', $id_umkm)
             ->where('id_produk', $id_produk)
             ->first();
-
         // Cek apakah produk ditemukan
         if (!$produk) {
             return redirect()->back()->with('error', 'Produk tidak ditemukan!');
         }
 
 
-        // Update data produk
         $produk->nama_produk = $request->nama_produk;
         $produk->stok = $request->stok;
         $produk->harga = $request->harga;
 
-        // Jika ada foto baru, hapus foto lama dan upload yang baru
         if ($request->hasFile('foto_produk')) {
-            // dd untuk memeriksa file yang diupload
 
             if ($produk->foto_produk && Storage::exists('public/produk/' . $produk->foto_produk)) {
                 Storage::delete('public/produk/' . $produk->foto_produk);
             }
 
-            // Simpan foto baru dan set pathnya
             $fotoPath = $request->file('foto_produk')->store('public/produk');
             $produk->foto_produk = basename($fotoPath);
         }
@@ -120,7 +113,6 @@ class ProdukController extends Controller
         // Save the changes to the database
         $produk->save();
 
-        // Redirect kembali ke halaman produk UMKM dengan pesan sukses
         return redirect()->route('umkm.index.produk', ['id_umkm' => $id_umkm])
             ->with('success', 'Produk berhasil diperbarui!');
     }
@@ -137,14 +129,11 @@ class ProdukController extends Controller
     public function updateStatus(Request $request)
     {
 
-        // Ambil produk berdasarkan ID
         $produk = Produk::findOrFail($request->id_produk);
 
-        // Periksa apakah status dikirim dengan benar
         $produk->status = $request->status == 'on' ? 'on' : 'off';
         $produk->save();
 
-        // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
 }

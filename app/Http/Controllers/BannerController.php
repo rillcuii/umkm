@@ -49,6 +49,7 @@ class BannerController extends Controller
                 'link' => $filename,  
                 'status' => 'off',    
             ]);
+            
             return redirect()->route('admin.index.banner')->with('success', 'Banner added successfully!');
         }
         return back()->with('error', 'Image upload failed or file is not valid!');
@@ -83,24 +84,19 @@ class BannerController extends Controller
      */
     public function destroy(Banner $id_banner)
     {
-        // Menghapus banner berdasarkan instance yang diterima
         $id_banner->delete();
 
-        // Redirect setelah penghapusan dengan pesan sukses
         return redirect()->route('admin.index.banner')->with('success', 'Banner berhasil dihapus.');
     }
 
     public function updateStatus(Request $request)
     {
 
-        // Ambil banner berdasarkan ID
         $banner = Banner::findOrFail($request->id_banner);
 
-        // Periksa apakah status dikirim dengan benar
         $banner->status = $request->status == 'on' ? 'on' : 'off';
         $banner->save();
 
-        // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
 }

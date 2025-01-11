@@ -12,8 +12,6 @@ class AdminDashboardController extends Controller
     {
         $totalPemilikUmkm = PemilikUmkm::distinct('id_umkm')->count('id_umkm');
 
-
-    // Kirim data ke view
-    return view('dashboard.admin.dashboard', compact('totalPemilikUmkm'));
+        return view('dashboard.admin.dashboard', compact('totalPemilikUmkm'));
     }
 }
