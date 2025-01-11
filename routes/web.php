@@ -92,4 +92,9 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::post('/getkabupaten', [TransaksiController::class, 'getkabupaten'])->name('getkabupaten');
     Route::post('/getkecamatan', [TransaksiController::class, 'getkecamatan'])->name('getkecamatan');
     Route::post('/getdesa', [TransaksiController::class, 'getdesa'])->name('getdesa');
+
+    //pesan
+    Route::get('/pelanggan/{id_user}/messages', [MessageController::class, 'indexForPelanggan'])->name('pelanggan.messages.index');
+    Route::get('/pelanggan/{id_user}/messages/{id_umkm}', [MessageController::class, 'showForPelanggan'])->name('pelanggan.messages.show');
+    Route::post('/pelanggan/{id_user}/messages/{id_umkm}', [MessageController::class, 'sendForPelanggan'])->name('pelanggan.messages.send');
 });

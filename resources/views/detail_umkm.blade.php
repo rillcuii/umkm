@@ -37,6 +37,9 @@
                 </div>
             @endforeach
         </div>
+
+        <a href="{{ route('pelanggan.messages.show', ['id_user' => auth()->id(), 'id_umkm' => $umkm->id_umkm]) }}"
+            class="btn btn-primary">Chat umkm</a>
     </div>
 </body>
 

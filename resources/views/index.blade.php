@@ -31,7 +31,6 @@
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
                 <ul
                     class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-
                     <!-- Jika pengguna sudah login -->
                     @if (Auth::check())
                         <li>
@@ -49,7 +48,6 @@
                                 </button>
                             </form>
                         </li>
-                        <!-- Jika pengguna belum login -->
                     @else
                         <li>
                             <a href="{{ route('login') }}"
@@ -71,6 +69,14 @@
             </div>
         </div>
     </nav>
+
+    <!-- Menambahkan Daftar Chat (Tampilan Chat Pelanggan) -->
+    @if (Auth::check())
+        <div class="container mx-auto mt-4 text-right">
+            <a href="{{ route('pelanggan.messages.index', ['id_user' => Auth::user()->id_user]) }}"
+                class="text-blue-500 font-bold">Daftar Chat</a>
+        </div>
+    @endif
 
     <!-- Banner Section -->
     <div class="banner-container mb-8">
