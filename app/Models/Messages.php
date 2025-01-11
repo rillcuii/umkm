@@ -17,6 +17,9 @@ class Messages extends Model
         'message',
     ];
 
+    public $timestamps = true;    
+
+
     // Relasi dengan tabel users
     public function fromUser()
     {

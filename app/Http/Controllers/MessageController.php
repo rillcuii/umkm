@@ -50,33 +50,34 @@ class MessageController extends Controller
             }
         }
 
-        // Mengirim data ke view
         return view('dashboard.umkm.messages.index', compact('messages', 'userNames', 'id_umkm', 'user'));
     }
-
-
-
-
-
-
 
     public function show($id_umkm, $id_user)
     {
         // Mengambil pesan antara UMKM dan user tertentu
         $messages = Messages::where(function ($query) use ($id_user, $id_umkm) {
             // Menyaring pesan yang dikirim dari user ke UMKM dan sebaliknya
-            $query->where('from_user_id', $id_user)
-                ->where('to_umkm_id', $id_umkm)
-                ->orWhere('from_umkm_id', $id_umkm)
-                ->where('to_user_id', $id_user);
+            $query->where(function ($subQuery) use ($id_user, $id_umkm) {
+                $subQuery->where('from_user_id', $id_user)
+                    ->where('to_umkm_id', $id_umkm);
+            })
+                ->orWhere(function ($subQuery) use ($id_user, $id_umkm) {
+                    $subQuery->where('from_umkm_id', $id_umkm)
+                        ->where('to_user_id', $id_user);
+                });
         })
             ->leftJoin('user', 'user.id_user', '=', 'messages.from_user_id')
             ->leftJoin('pemilik_umkm', 'pemilik_umkm.id_umkm', '=', 'messages.from_umkm_id')
-            ->select('messages.*', 'user.username as user_name', 'pemilik_umkm.nama_umkm as umkm_name')
-            ->orderBy('messages.created_at', 'asc')
+            ->select(
+                'messages.*',
+                'user.username as user_name',
+                'pemilik_umkm.nama_umkm as umkm_name'
+            )
+            ->orderBy('messages.created_at', 'asc') // Urutkan berdasarkan waktu, dari yang lama ke yang baru
             ->get();
 
-        // Menambahkan nilai default jika ada nilai yang kosong
+        // Mengisi nama default jika nama user atau UMKM kosong
         foreach ($messages as $message) {
             if (empty($message->user_name)) {
                 $message->user_name = 'Unknown User';
@@ -86,40 +87,33 @@ class MessageController extends Controller
             }
         }
 
+        // Mengembalikan view dengan data pesan
         return view('dashboard.umkm.messages.show', compact('messages', 'id_umkm', 'id_user'));
     }
 
-    // Mengirim pesan dari UMKM ke User atau sebaliknya
     public function send(Request $request, $id_umkm, $id_user)
     {
-        $umkm = Auth::guard('umkm')->user(); // Ambil data UMKM yang sedang login
+        $umkm = Auth::guard('umkm')->user();
 
-        // Validasi input pesan
         $request->validate([
             'message' => 'required|string|max:1000',
         ]);
 
-        // Tentukan ID pengirim dan penerima
         $message = new Messages();
 
-        // Jika UMKM yang membalas pesan
         if ($umkm->id_umkm == $id_umkm) {
-            $message->from_umkm_id = $umkm->id_umkm;  // ID UMKM yang mengirim pesan
-            $message->to_user_id = $id_user;  // ID user yang menerima pesan
+            $message->from_umkm_id = $umkm->id_umkm;
+            $message->to_user_id = $id_user;
         } else {
-            // Jika User yang mengirim pesan
-            $message->from_user_id = $id_user;  // ID user yang mengirim pesan
-            $message->to_umkm_id = $umkm->id_umkm;  // ID UMKM yang menerima pesan
+            $message->from_user_id = $id_user;
+            $message->to_umkm_id = $umkm->id_umkm;
         }
 
-        // Isi pesan
         $message->message = $request->message;
 
-        // Simpan pesan ke database
         $message->save();
 
 
-        // Redirect kembali ke halaman percakapan
         return redirect()->route('umkm.messages.show', ['id_umkm' => $id_umkm, 'id_user' => $id_user])
             ->with('success', 'Pesan berhasil dikirim!');
     }

@@ -10,7 +10,6 @@
     </head>
 
     <body>
-
         <!-- Button untuk toggle sidebar -->
         <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
             type="button"
@@ -97,5 +96,6 @@
         @yield('sidebar_umkm')
 
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
     </html>
