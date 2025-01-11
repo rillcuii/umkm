@@ -30,7 +30,6 @@ class ProdukController extends Controller
      */
     public function store(Request $request, $id_umkm)
     {
-        // Validasi input
         $request->validate([
             'nama_produk' => 'required',
             'stok'        => 'required|numeric',
@@ -38,14 +37,12 @@ class ProdukController extends Controller
             'harga'       => 'required|numeric',
         ]);
 
-        // Upload gambar produk
         if ($request->hasFile('foto_produk')) {
             $foto = $request->file('foto_produk');
             $filename = date('YmdHis') . '.' . $foto->getClientOriginalExtension();
             $foto->storeAs('public/produk', $filename);
         }
 
-        // Simpan data produk ke database
         Produk::create([
             'id_umkm'     => $id_umkm,
             'nama_produk' => $request->nama_produk,

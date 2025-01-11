@@ -6,6 +6,7 @@ use App\Models\Produk;
 use App\Models\Regency;
 use App\Models\Village;
 use App\Models\District;
+use App\Models\Kategori;
 use App\Models\Province;
 use App\Models\PemilikUmkm;
 use Illuminate\Http\Request;
@@ -18,12 +19,13 @@ class PemilikUmkmController extends Controller
     {
         $produk = Produk::all();
         $provinces = Province::all();
+        $kategori = Kategori::all();
         // $regencies = Regency::all();
         // $districts = District::all();
         // $villages = Village::all();
 
         // dd($produk, $provinces, $regencies, $districts, $villages);
-        return view('register_umkm', compact('produk', 'provinces'));
+        return view('register_umkm', compact('produk', 'provinces', 'kategori'));
     }
 
     public function getkabupaten(request $request)
@@ -83,6 +85,7 @@ class PemilikUmkmController extends Controller
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'usia' => 'required|integer',
             'status_kepemilikan' => 'required|in:individu,kelompok,lainnya',
+            'id_kategori' => 'required',
             // 'id_produk' => 'nullable',
             'nomer_handphone' => 'required',
             'alamat_pemilik' => 'required',
@@ -99,7 +102,6 @@ class PemilikUmkmController extends Controller
             Storage::makeDirectory('public/foto_profil');
         }
 
-        // Proses upload foto_profil jika ada
         if ($request->hasFile('foto_profil')) {
             $foto = $request->file('foto_profil');
             $filename = date('YmdHis') . '.' . $foto->getClientOriginalExtension();
@@ -107,12 +109,10 @@ class PemilikUmkmController extends Controller
             $validated['foto_profil'] = $filename;
         }
 
-        // Cek dan buat folder untuk foto_umkm jika belum ada
         if (!Storage::exists('public/foto_umkm')) {
             Storage::makeDirectory('public/foto_umkm');
         }
 
-        // Proses upload foto_umkm jika ada
         if ($request->hasFile('foto_umkm')) {
             $fotoUmkm = $request->file('foto_umkm');
             $filenameUmkm = date('YmdHis') . '.' . $fotoUmkm->getClientOriginalExtension();
@@ -131,60 +131,5 @@ class PemilikUmkmController extends Controller
         PemilikUmkm::create($validated);
 
         return redirect()->route('umkm.dashboard')->with('success', 'UMKM berhasil terdaftar!');
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PemilikUmkm $pemilikUmkm)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PemilikUmkm $pemilikUmkm)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PemilikUmkm $pemilikUmkm)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PemilikUmkm $pemilikUmkm)
-    {
-        //
     }
 }

@@ -30,38 +30,27 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'nama_banner' => 'required|string|max:255',
             'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Periksa apakah file ada dan valid
         if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
-            // Ambil file gambar yang diupload
             $foto = $request->file('banner');
 
-            // Ambil ekstensi file gambar
             $extension = $foto->getClientOriginalExtension();
 
-            // Buat nama file unik berdasarkan waktu saat ini
             $filename = date('YmdHis') . '.' . $extension;
 
-            // Simpan file ke folder public/banner dengan nama file yang unik
             $foto->storeAs('public/banner', $filename);
 
-            // Simpan data banner ke database
             Banner::create([
                 'nama_banner' => $request->nama_banner,
-                'link' => $filename,  // Simpan nama file yang disimpan di storage
-                'status' => 'off',     // Status default
+                'link' => $filename,  
+                'status' => 'off',    
             ]);
-
-            // Redirect setelah berhasil
             return redirect()->route('admin.index.banner')->with('success', 'Banner added successfully!');
         }
-
-        // Jika file tidak ada atau tidak valid
         return back()->with('error', 'Image upload failed or file is not valid!');
     }
 

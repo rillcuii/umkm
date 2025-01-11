@@ -148,6 +148,17 @@
                 </select>
             </div>
 
+            <div>
+                <label for="Kategori" class="block text-xs font-bold text-gray-700 mb-1">Kategori</label>
+                <select id="Kategori" name="id_kategori" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+                    <option value="">Pilih Kategori...</option>
+                    @foreach ($kategori as $s)
+                        <option value="{{ $s->id_kategori }}">{{ $s->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <!-- Password -->
             <div>
                 <label for="password" class="block text-xs font-bold text-gray-700 mb-1">Password</label>

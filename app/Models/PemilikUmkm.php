@@ -38,6 +38,7 @@ class PemilikUmkm extends Model implements AuthenticatableContract
         'jenis_kelamin',
         'usia',
         'status_kepemilikan',
+        'id_kategori',
         'id_produk',
         'nomer_handphone',
         'alamat_pemilik',

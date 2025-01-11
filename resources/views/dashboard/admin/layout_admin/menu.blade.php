@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <body class = "bg-gray-100">
@@ -52,6 +55,18 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Data Banner</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.index.kategori') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg text-white  hover:bg-gray-700 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Data Kategori</span>
+                    </a>
+                </li>
             </ul>
             <div class="absolute bottom-0 left-0 w-full px-3 pb-4">
                 <form action="{{ route('logout') }}" method="POST">
@@ -79,8 +94,9 @@
 
     #default-sidebar a:hover svg {
         color: white;
-        /* Mengatur warna ikon menjadi putih saat di-hover */
     }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\Province;
 use App\Models\Transaksi;
@@ -33,12 +34,14 @@ class DataUmkmController extends Controller
             ->join('villages', function ($join) {
                 $join->on(DB::raw('pemilik_umkm.kelurahan COLLATE utf8mb4_unicode_ci'), '=', DB::raw('villages.id COLLATE utf8mb4_unicode_ci'));
             })
+            ->join('kategori', 'pemilik_umkm.id_kategori', '=', 'kategori.id_kategori') // Join ke tabel kategori
             ->select(
                 'pemilik_umkm.*',
                 'provinces.name as provinsi_name',
                 'regencies.name as kabupaten_kota_name',
                 'districts.name as kecamatan_name',
-                'villages.name as kelurahan_name'
+                'villages.name as kelurahan_name',
+                'kategori.nama_kategori' // Ambil nama_kategori dari tabel kategori
             )
             ->where('pemilik_umkm.id_umkm', $id_umkm)
             ->first();

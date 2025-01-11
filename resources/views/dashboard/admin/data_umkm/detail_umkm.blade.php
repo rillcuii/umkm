@@ -38,7 +38,7 @@
                             <!-- Foto dan Data Pemilik -->
                             <div class="flex flex-col items-center lg:items-start">
                                 <!-- Foto -->
-                                <img id="field-image" src="{{ asset('storage/foto_profil/' . $umkm->foto_profil) }}"
+                                <img id="field-image" src="{{ asset('storage/foto_umkm/' . $umkm->foto_umkm) }}"
                                     alt="Owner Image" class="w-32 h-32 object-cover rounded-full shadow-lg mb-4" />
                                 <!-- Data Pemilik -->
                                 <div class="text-center lg:text-left">
@@ -82,7 +82,11 @@
                                         <p class="text-gray-600 mb-4" id="field-email">
                                             {{ old('status_kepemilikan', $umkm->status_kepemilikan) }}</p>
                                     </div>
-
+                                    <div>
+                                        <h2 class="text-lg font-bold text-gray-700">Kategori Umkm</h2>
+                                        <p class="text-gray-600 mb-4" id="field-email">
+                                            {{ old('kategori', $umkm->nama_kategori) }}</p>
+                                    </div>
                                     <div>
                                         <h2 class="text-lg font-bold text-gray-700">Alamat Pemilik</h2>
                                         <p class="text-gray-600 mb-4" id="field-email">

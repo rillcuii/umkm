@@ -9,6 +9,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\DataUmkmController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PemilikUmkmController;
 use App\Http\Controllers\AdminDashboardController;
 
@@ -44,6 +45,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/data_umkm', [DataUmkmController::class, 'index'])->name('admin.index.umkm');
     Route::get('/admin/data_umkm/detail/{id_umkm}', [DataUmkmController::class, 'detail'])->name('admin.detail.umkm');
     Route::delete('admin/delete/{id_umkm}', [DataUmkmController::class, 'delete'])->name('umkm.delete');
+
+    //kategori
+    Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('admin.index.kategori');
+    Route::get('/admin/tambah_kategori', [KategoriController::class, 'create'])->name('admin.tambah.kategori');
+    Route::post('/admin/kategori/simpan', [KategoriController::class, 'store'])->name('admin.simpan.kategori');
+    Route::get('admin/edit/{id_kategori}', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::put('admin/update/{id_kategori}', [KategoriController::class, 'update'])->name('admin.kategori.update');
 });
 
 // Route untuk pemilik UMKM (dengan middleware untuk pemilik UMKM)
