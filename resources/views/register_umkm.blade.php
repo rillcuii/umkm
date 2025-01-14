@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Halaman Registrasi Pemilik UMKM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-white min-h-screen flex items-center justify-center px-4">
     <!-- Kontainer Utama -->
     <div class="max-w-3xl w-full mx-auto">
-        <form action="{{ route('umkm.register.submit') }}" enctype="multipart/form-data" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <form action="{{ route('umkm.register.submit') }}" enctype="multipart/form-data" method="POST"
+            class="grid grid-cols-1 md:grid-cols-2 gap-3">
             @csrf
 
             <div class="md:col-span-2 flex justify-center mb-3">
@@ -49,6 +49,11 @@
                 <label for="nama_umkm" class="block text-xs font-bold text-gray-700 mb-1">Nama UMKM</label>
                 <input type="text" id="nama_umkm" name="nama_umkm" placeholder="Nama UMKM" required
                     class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs">
+            </div>
+            <div>
+                <label for="deskripsi" class="block text-xs font-bold text-gray-700 mb-1">Deskripsi UMKM</label>
+                <textarea id="deskripsi" name="deskripsi" rows="2" placeholder="Deskripsi UMKM" required
+                    class="w-full px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition text-xs"></textarea>
             </div>
 
             <!-- Foto Profil -->
@@ -184,73 +189,77 @@
 
     <script>
         $(document).ready(function() {
-            // Set CSRF token for AJAX requests
+            // Set CSRF token untuk semua AJAX request
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
+            // Event ketika provinsi dipilih
             $('#provinsi').on('change', function() {
                 let id_provinsi = $(this).val();
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('getkabupaten') }}",
+                    url: "{{ route('getkabupaten') }}", // Menggunakan route Laravel
                     data: {
                         id_provinsi: id_provinsi
                     },
                     cache: false,
-
                     success: function(msg) {
+                        // Menampilkan pilihan kabupaten
                         $('#kabupaten_kota').html(msg);
                     },
-                    error: function(data) {
-                        console.log('Error:', data);
+                    error: function(xhr, status, error) {
+                        console.log('Error:', xhr.responseText);
                     }
                 });
             });
+
+            // Event ketika kabupaten dipilih
             $('#kabupaten_kota').on('change', function() {
                 let id_kabupaten = $(this).val();
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('getkecamatan') }}",
+                    url: "{{ route('getkecamatan') }}", // Menggunakan route Laravel
                     data: {
                         id_kabupaten: id_kabupaten
                     },
                     cache: false,
-
                     success: function(msg) {
+                        // Menampilkan pilihan kecamatan
                         $('#kecamatan').html(msg);
                     },
-                    error: function(data) {
-                        console.log('Error:', data);
+                    error: function(xhr, status, error) {
+                        console.log('Error:', xhr.responseText);
                     }
                 });
             });
+
+            // Event ketika kecamatan dipilih
             $('#kecamatan').on('change', function() {
                 let id_kecamatan = $(this).val();
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('getdesa') }}",
+                    url: "{{ route('getdesa') }}", // Menggunakan route Laravel
                     data: {
                         id_kecamatan: id_kecamatan
                     },
                     cache: false,
-
                     success: function(msg) {
+                        // Menampilkan pilihan desa
                         $('#desa').html(msg);
                     },
-                    error: function(data) {
-                        console.log('Error:', data);
+                    error: function(xhr, status, error) {
+                        console.log('Error:', xhr.responseText);
                     }
                 });
             });
         });
     </script>
-
 </body>
 
 </html>

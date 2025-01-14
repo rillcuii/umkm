@@ -12,6 +12,7 @@ use App\Models\PemilikUmkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
@@ -50,8 +51,8 @@ class TransaksiController extends Controller
                 'districts.name as kecamatan_name',
                 'villages.name as kelurahan_name'
             )
-            ->where('transaksi.id_umkm', $id_umkm) 
-            ->where('transaksi.id_transaksi', $id_transaksi) 
+            ->where('transaksi.id_umkm', $id_umkm)
+            ->where('transaksi.id_transaksi', $id_transaksi)
             ->first();
 
 
@@ -62,7 +63,7 @@ class TransaksiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function getkabupaten(request $request)
+    public function getkabupatentransaksi(request $request)
     {
         $id_provinsi = $request->id_provinsi;
 
@@ -77,7 +78,7 @@ class TransaksiController extends Controller
         echo $option;
     }
 
-    public function getkecamatan(request $request)
+    public function getkecamatantransaksi(request $request)
     {
         $id_kabupaten = $request->id_kabupaten;
 
@@ -91,7 +92,7 @@ class TransaksiController extends Controller
         echo $option;
     }
 
-    public function getdesa(request $request)
+    public function getdesatransaksi(request $request)
     {
         $id_kecamatan = $request->id_kecamatan;
 
@@ -151,6 +152,7 @@ class TransaksiController extends Controller
             'kabupaten_kota' => $request->kabupaten_kota,
             'kecamatan' => $request->kecamatan,
             'kelurahan' => $request->kelurahan,
+            // 'created_at' => $request->created_at,
             'status' => 'diproses',
         ]);
 
@@ -165,7 +167,9 @@ class TransaksiController extends Controller
 
     public function history()
     {
-        $transaksis = Transaksi::where('id_user', auth()->user()->id_user)->get();
+        $transaksis = Transaksi::where('id_user', auth()->user()->id_user)
+            ->with(['umkm.produk'])
+            ->get();
 
         return view('dashboard.pelanggan.transaksi.history_transaksi', compact('transaksis'));
     }

@@ -1,3 +1,5 @@
+@extends('navbar')
+@section('navbar')
 <!DOCTYPE html>
 <html lang="id">
 
@@ -25,8 +27,13 @@
                 <div class="border p-4 rounded-lg shadow-md bg-white">
                     <h3 class="text-xl font-bold">{{ $item->nama_produk }}</h3>
                     <p><strong>Harga:</strong> {{ number_format($item->harga) }}</p>
-                    <p><strong>Stok:</strong> {{ number_format($item->stok) }}</p>
-
+                    <p><strong>Stok:</strong>
+                        @if ($item->stok == 0)
+                            Stok habis
+                        @else
+                            {{ number_format($item->stok) }}
+                        @endif
+                    </p>
                     @if ($item->foto_produk)
                         <img src="{{ asset('storage/produk/' . $item->foto_produk) }}" alt="Foto Produk"
                             class="mt-4 w-full h-48 object-cover rounded-lg">
@@ -38,9 +45,15 @@
             @endforeach
         </div>
 
-        <a href="{{ route('pelanggan.messages.show', ['id_user' => auth()->id(), 'id_umkm' => $umkm->id_umkm]) }}"
-            class="btn btn-primary">Chat umkm</a>
+        @if (auth()->check())
+            <a href="{{ route('pelanggan.messages.show', ['id_user' => auth()->id(), 'id_umkm' => $umkm->id_umkm]) }}"
+                class="btn btn-primary">Chat umkm</a>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-secondary">Chat</a>
+        @endif
     </div>
 </body>
 
 </html>
+@include('footer')
+@endsection

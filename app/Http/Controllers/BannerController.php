@@ -32,7 +32,7 @@ class BannerController extends Controller
     {
         $request->validate([
             'nama_banner' => 'required|string|max:255',
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
@@ -46,10 +46,10 @@ class BannerController extends Controller
 
             Banner::create([
                 'nama_banner' => $request->nama_banner,
-                'link' => $filename,  
-                'status' => 'off',    
+                'link' => $filename,
+                'status' => 'off',
             ]);
-            
+
             return redirect()->route('admin.index.banner')->with('success', 'Banner added successfully!');
         }
         return back()->with('error', 'Image upload failed or file is not valid!');
@@ -66,17 +66,44 @@ class BannerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Banner $banner)
+    public function edit(string $id_banner)
     {
-        //
+        $banner = Banner::findOrFail($id_banner);
+
+        return view('dashboard.admin.banner.edit_banner', compact('banner'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Banner $banner)
+    public function update(Request $request,  $id_banner)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'nama_banner' => 'required|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $banner = Banner::findOrFail($id_banner);
+
+        if ($request->hasFile('banner') && $request->file('banner')->isValid()) {
+            $foto = $request->file('banner');
+            $extension = $foto->getClientOriginalExtension();
+            $filename = date('YmdHis') . '.' . $extension;
+
+            $foto->storeAs('public/banner', $filename);
+
+            $banner->update([
+                'nama_banner' => $request->nama_banner,
+                'link' =>  $filename,
+            ]);
+        } else {
+            $banner->update([
+                'nama_banner' => $request->nama_banner,
+            ]);
+        }
+
+        return redirect()->route('admin.index.banner')->with('success', 'Banner berhasil diperbarui.');
     }
 
     /**

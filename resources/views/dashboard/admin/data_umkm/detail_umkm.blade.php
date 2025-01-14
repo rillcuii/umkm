@@ -61,6 +61,11 @@
                                         {{ old('kategori', $umkm->nama_kategori) }}</p>
                                 </div>
                                 <div>
+                                    <h2 class="text-lg font-bold text-gray-700">Deskripsi Umkm</h2>
+                                    <p class="text-gray-600 mb-4" id="field-email">
+                                        {{ old('deskripsi', $umkm->deskripsi) }}</p>
+                                </div>
+                                <div>
                                     <h2 class="text-lg font-bold text-gray-700">Alamat Pemilik</h2>
                                     <p class="text-gray-600 mb-4" id="field-email">
                                         {{ old('alamat_pemilik', $umkm->alamat_pemilik) }}</p>

@@ -20,7 +20,6 @@ class PemilikUmkmController extends Controller
         $produk = Produk::all();
         $provinces = Province::all();
         $kategori = Kategori::all();
-    
         return view('register_umkm', compact('produk', 'provinces', 'kategori'));
     }
 
@@ -76,8 +75,9 @@ class PemilikUmkmController extends Controller
             'username' => 'required|string|max:10',
             'nama_lengkap' => 'required|string|max:25',
             'nama_umkm' => 'required|string|max:25',
-            'foto_profil' => 'required|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'foto_umkm' => 'required|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_profil' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_umkm' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi' => 'required',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'usia' => 'required|integer',
             'status_kepemilikan' => 'required|in:individu,kelompok,lainnya',

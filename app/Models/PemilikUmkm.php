@@ -39,6 +39,7 @@ class PemilikUmkm extends Model implements AuthenticatableContract
         'nama_umkm',
         'foto_profil',
         'foto_umkm',
+        'deskripsi',
         'jenis_kelamin',
         'usia',
         'status_kepemilikan',

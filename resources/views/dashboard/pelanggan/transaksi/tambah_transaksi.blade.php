@@ -88,7 +88,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('getkabupaten') }}",
+                url: "{{ route('getkabupatentransaksi') }}",
                 data: {
                     id_provinsi: id_provinsi
                 },
@@ -107,7 +107,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('getkecamatan') }}",
+                url: "{{ route('getkecamatantransaksi') }}",
                 data: {
                     id_kabupaten: id_kabupaten
                 },
@@ -126,7 +126,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('getdesa') }}",
+                url: "{{ route('getdesatransaksi') }}",
                 data: {
                     id_kecamatan: id_kecamatan
                 },

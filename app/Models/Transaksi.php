@@ -23,9 +23,10 @@ class Transaksi extends Model
         'kabupaten_kota',
         'kecamatan',
         'kelurahan',
+        'created_at',
         'status',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function pemilikUmkm()
     {

@@ -2,7 +2,6 @@
 
 use App\Models\Banner;
 use App\Models\Produk;
-use App\Models\PemilikUmkm;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IndexController;
@@ -27,11 +26,12 @@ Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/register-pelanggan', [UserController::class, 'showRegisterForm'])->name('register.pelanggan');
 Route::post('/register-pelanggan', [UserController::class, 'register'])->name('register.pelanggan.submit');
-Route::get('/umkm/register', [PemilikUmkmController::class, 'showRegisterForm'])->name('umkm.register');
-Route::post('/umkm/register', [PemilikUmkmController::class, 'register'])->name('umkm.register.submit');
+Route::get('/register/umkm', [PemilikUmkmController::class, 'showRegisterForm'])->name('register.umkm');
+Route::post('/umkm/register/simpan', [PemilikUmkmController::class, 'register'])->name('umkm.register.submit');
 Route::post('/getkabupaten', [PemilikUmkmController::class, 'getkabupaten'])->name('getkabupaten');
 Route::post('/getkecamatan', [PemilikUmkmController::class, 'getkecamatan'])->name('getkecamatan');
 Route::post('/getdesa', [PemilikUmkmController::class, 'getdesa'])->name('getdesa');
+
 
 // Route untuk admin (dengan middleware untuk admin)
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -43,6 +43,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/banner/simpan', [BannerController::class, 'store'])->name('admin.simpan.banner');
     Route::post('/admin/update-status', [BannerController::class, 'updateStatus'])->name('admin.update.status');
     Route::delete('admin/delete/{id_banner}', [BannerController::class, 'destroy'])->name('admin.banner.delete');
+    Route::get('admin/edit/{id_banner}', [BannerController::class, 'edit'])->name('admin.banner.edit');
+    Route::put('admin/update/{id_banner}', [BannerController::class, 'update'])->name('admin.banner.update');
+
 
     // data umkm
     Route::get('/admin/data_umkm', [DataUmkmController::class, 'index'])->name('admin.index.umkm');
@@ -53,8 +56,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('admin.index.kategori');
     Route::get('/admin/tambah_kategori', [KategoriController::class, 'create'])->name('admin.tambah.kategori');
     Route::post('/admin/kategori/simpan', [KategoriController::class, 'store'])->name('admin.simpan.kategori');
-    Route::get('admin/edit/{id_kategori}', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-    Route::put('admin/update/{id_kategori}', [KategoriController::class, 'update'])->name('admin.kategori.update');
+    Route::get('admin/edit/{id_kategori}/kategori', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::put('admin/update/{id_kategori}/kategori', [KategoriController::class, 'update'])->name('admin.kategori.update');
 });
 
 // Route untuk pemilik UMKM (dengan middleware untuk pemilik UMKM)
@@ -89,12 +92,14 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
     Route::get('/transaksi/{id_umkm}/{id_produk}', [TransaksiController::class, 'create'])->name('transaksi.create');
     Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::get('/history-transaksi', [TransaksiController::class, 'history'])->name('history.transaksi')->middleware('auth');
-    Route::post('/getkabupaten', [TransaksiController::class, 'getkabupaten'])->name('getkabupaten');
-    Route::post('/getkecamatan', [TransaksiController::class, 'getkecamatan'])->name('getkecamatan');
-    Route::post('/getdesa', [TransaksiController::class, 'getdesa'])->name('getdesa');
+    Route::post('/getkabupaten/transaksi', [TransaksiController::class, 'getkabupatentransaksi'])->name('getkabupatentransaksi');
+    Route::post('/getkecamatan/transaksi', [TransaksiController::class, 'getkecamatantransaksi'])->name('getkecamatantransaksi');
+    Route::post('/getdesa/transaksi', [TransaksiController::class, 'getdesatransaksi'])->name('getdesatransaksi');
 
     //pesan
     Route::get('/pelanggan/{id_user}/messages', [MessageController::class, 'indexForPelanggan'])->name('pelanggan.messages.index');
     Route::get('/pelanggan/{id_user}/messages/{id_umkm}', [MessageController::class, 'showForPelanggan'])->name('pelanggan.messages.show');
     Route::post('/pelanggan/{id_user}/messages/{id_umkm}', [MessageController::class, 'sendForPelanggan'])->name('pelanggan.messages.send');
+    Route::get('/pelanggan/messages/fetch/{id_umkm}', [MessageController::class, 'fetchMessages']);
+
 });

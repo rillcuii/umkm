@@ -1,21 +1,5 @@
 @extends('dashboard.admin.layout_admin.menu')
 @section('sidebar_admin')
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Data Banner</title>
-        <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-            .sidebar {
-                z-index: 50;
-            }
-        </style>
-    </head>
-
     <body class="bg-gray-100">
         <!-- Main Content -->
         <div class="flex-1 ml-64">
@@ -66,22 +50,36 @@
                                                 </label>
                                             </form>
                                         </td>
-                                        <td class="px-6 py-4 text-center space-x-2">
-                                            <form action="{{ route('admin.banner.delete', $banner->id_banner) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus banner ini?');">
-                                                @csrf
-                                                @method('DELETE') <!-- Menggunakan DELETE method -->
-                                                <button type="submit"
-                                                    class="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200">
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="flex justify-center space-x-2">
+                                                <!-- Tombol Update -->
+                                                <a href="{{ route('admin.banner.edit', $banner->id_banner) }}"
+                                                    class="p-2 bg-yellow-100 text-yellow-600 rounded-full hover:bg-yellow-200 flex items-center justify-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="w-5 h-5">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M6 18 18 6M6 6l12 12" />
+                                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                                                     </svg>
-                                                </button>
-                                            </form>
+                                                </a>
+
+                                                <!-- Tombol Delete -->
+                                                <form action="{{ route('admin.banner.delete', $banner->id_banner) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus banner ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="w-5 h-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -91,9 +89,6 @@
                 </div>
             </main>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     </body>
 
-    </html>
 @endsection
